@@ -1,5 +1,6 @@
 ---
 interface BaseProps {
+  id: string
   title: string
   href: string
   sr: string
@@ -47,10 +48,11 @@ interface LinkProps extends BaseProps {
 type Props = ButtonProps | LinkProps
 
 const props = Astro.props as Props
-const { title, href, sr, download, isExternal, isButton } = props
+const { id, title, href, sr, download, isExternal, isButton } = props
 ---
 
 <a
+  id={id}
   title={title}
   href={href}
   download={download}
