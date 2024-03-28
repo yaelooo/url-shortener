@@ -1,0 +1,32 @@
+---
+import ThemeSwitcher from "@base/ThemeSwitcher.astro"
+import Link from "@components/Link.astro"
+import LogoIcon from "@icons/LogoIcon.astro"
+---
+
+<header
+  class="sticky top-0 z-50 mb-4 flex items-center justify-between bg-custom-background/30 py-2 backdrop-blur"
+>
+  <a
+    href="/"
+    class="transform text-custom-accent transition-transform duration-200 ease-in-out hover:scale-105"
+  >
+    <LogoIcon />
+    <span class="sr-only">Logo</span>
+  </a>
+  <nav>
+    <ul class="flex items-center gap-2">
+      <li><ThemeSwitcher /></li>
+      <li>
+        <Link
+          title="logout"
+          href="/logout"
+          sr="logout"
+          isButton
+          variantButton="primary"
+          typeButton="flat">Log out</Link
+        >
+      </li>
+    </ul>
+  </nav>
+</header>

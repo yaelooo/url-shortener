@@ -1,0 +1,12 @@
+---
+import { getSocialUrl } from "@lib/urlShortener"
+const { social } = Astro.params
+
+const result = await getSocialUrl(`${social}`)
+
+if (result.error) {
+  return Astro.redirect("https://yaelo.dev")
+} else {
+  return Astro.redirect(`${result.result}`)
+}
+---

@@ -1,0 +1,52 @@
+---
+import Moon from "@icons/MoonIcon.astro"
+import Sun from "@icons/SunIcon.astro"
+---
+
+<button onclick="themeSwitch()" class="flex">
+  <span id="light" class="hidden">
+    <Moon class="fill-blue-900" />
+    <span class="sr-only">Switch to light theme</span>
+  </span>
+  <span id="dark" class="hidden">
+    <Sun class="fill-yellow-400" />
+    <span class="sr-only">Switch to dark theme</span>
+  </span>
+</button>
+
+<script is:inline>
+  let theme = localStorage.getItem("theme")
+
+  function themeSwitch() {
+    theme = theme === "light" ? "dark" : "light"
+    localStorage.setItem("theme", theme)
+    document.documentElement.className = theme
+    updateThemeDisplay()
+  }
+
+  function updateThemeDisplay() {
+    const lightButton = document.getElementById("light")
+    const darkButton = document.getElementById("dark")
+
+    if (lightButton && darkButton) {
+      if (theme === "light") {
+        lightButton.classList.add("hidden")
+        darkButton.classList.remove("hidden")
+      } else {
+        lightButton.classList.remove("hidden")
+        darkButton.classList.add("hidden")
+      }
+    }
+  }
+
+  if (!theme) {
+    theme =
+      window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light"
+  }
+
+  document.documentElement.className = theme
+  document.addEventListener("astro:after-swap", updateThemeDisplay)
+  updateThemeDisplay()
+</script>

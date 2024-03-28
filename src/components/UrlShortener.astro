@@ -1,0 +1,132 @@
+---
+import Link from "@components/Link.astro"
+import ChevronRightIcon from "@icons/ChevronRightIcon.astro"
+import CopyIcon from "@icons/CopyIcon.astro"
+import { shortenUrl } from "@lib/urlShortener"
+
+const origin = Astro.url.origin
+let result = null
+
+if (Astro.request.method === "POST") {
+  try {
+    const data = await Astro.request.formData()
+    const url = data.get("urlInput")
+    result = await shortenUrl(`${url}`)
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message)
+    }
+  }
+}
+---
+
+<form class="flex w-full sm:w-3/4" method="POST">
+  <input
+    name="urlInput"
+    type="text"
+    placeholder="Enter a URL to shorten"
+    autocomplete="url"
+    autofocus
+    class="flex flex-grow rounded-l-md border-y border-l border-custom-accent/50 bg-custom-background p-2 outline-none"
+  />
+  <button
+    class="flex items-center rounded-r-md border border-custom-accent/50 bg-custom-accent/30 p-2 hover:bg-custom-accent/40"
+  >
+    Shorten <ChevronRightIcon />
+  </button>
+</form>
+{
+  result ? (
+    result.result ? (
+      <section class="flex flex-col gap-2 text-lg text-green-600">
+        <article class="flex flex-col justify-center">
+          <span>Shortened URL:</span>
+          <div
+            id="shortenedUrlContainer"
+            class="flex flex-row items-center gap-2 text-custom-primary"
+          >
+            <span id="shortenedUrl">{`${origin}/${result.result}`}</span>
+            <button title="Copy url shortened" class="buttonCopy" aria-label="Copy url shortened">
+              <CopyIcon />
+            </button>
+          </div>
+        </article>
+        <figure>
+          <img src="" class="inline size-40 rounded-xl" alt="QR Code" />
+          <figcaption class="text-center">
+            <Link
+              title="Download QR Code"
+              href=""
+              download={`qrcode-${result.result}.png`}
+              sr="Download QR Code"
+              variantLink="noAccent"
+            >
+              Download QR
+            </Link>
+          </figcaption>
+        </figure>
+      </section>
+    ) : (
+      <span class="text-red-800">Error: {`${result.error}`}</span>
+    )
+  ) : null
+}
+
+<script>
+  import QRCode from "qrcode"
+
+  document.addEventListener("astro:page-load", async () => {
+    const urlElement = document.getElementById("shortenedUrl")
+
+    if (urlElement) {
+      const urlText = urlElement.textContent
+
+      if (urlText) {
+        const qr = await QRCode.toDataURL(urlText, {
+          errorCorrectionLevel: "H",
+          scale: 10,
+        })
+
+        const figureElement = document.querySelector("figure") as HTMLElement
+        const img = figureElement.querySelector("img") as HTMLImageElement
+        img.src = qr
+
+        const link = figureElement.querySelector(
+          'Link[title="Download QR Code"]'
+        ) as HTMLAnchorElement
+        link.href = qr
+      }
+    }
+  })
+</script>
+
+<script>
+  const svg_check =
+    '<svg width="24" height="24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"></path><path d="m5 12 5 5L20 7"></path></svg>'
+  async function copyToClipboard(text: string) {
+    try {
+      await navigator.clipboard.writeText(text)
+      return true
+    } catch (err) {
+      return false
+    }
+  }
+  document.addEventListener("astro:page-load", () => {
+    const parentElement = document.getElementById("shortenedUrlContainer")
+    parentElement?.addEventListener("click", async (event) => {
+      const button = (event.target as Element).closest(".buttonCopy")
+      if (button) {
+        const textElement = button.previousElementSibling
+        const textToCopy =
+          textElement && textElement.textContent ? textElement.textContent.trim() : ""
+        if (textToCopy && (await copyToClipboard(textToCopy))) {
+          const originalSvg = button.innerHTML
+          button.innerHTML = svg_check
+          setTimeout(() => {
+            button.innerHTML = originalSvg
+          }, 1000)
+        }
+      }
+    })
+  })
+</script>

@@ -1,0 +1,35 @@
+---
+import Layout from "@layouts/Layout.astro"
+import Link from "@components/Link.astro"
+import UrlShortener from "@components/UrlShortener.astro"
+---
+
+<Layout title="">
+  <div class="flex flex-col items-center justify-center
+   text-center">
+    <h1>A simple URL shortener</h1>
+    <h2>Shorten links easily with a simple click</h2>
+    <div class="my-4 flex gap-8">
+      <Link
+        title="login"
+        href="/login"
+        sr="login"
+        isButton
+        variantButton="primary"
+        typeButton="flat">Log in</Link
+      >
+      <Link
+        title="signup"
+        href="/signup"
+        sr="signup"
+        isButton
+        variantButton="primary"
+        typeButton="ghost">Sign up</Link
+      >
+    </div>
+    <p class="mb-4 text-lg">
+      All links you shorten will expire in 48 hours, register or log in to modify this time.
+    </p>
+    <UrlShortener />
+  </div>
+</Layout>

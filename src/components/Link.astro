@@ -1,0 +1,73 @@
+---
+interface BaseProps {
+  title: string
+  href: string
+  sr: string
+  download?: string
+  isExternal?: boolean
+}
+
+const buttonTypes = {
+  flat: "flex rounded-md border px-4 py-1 border-transparent",
+  ghost: "flex rounded-md border px-4 py-1",
+}
+
+const buttonFlatVariants = {
+  primary: "bg-custom-accent/30",
+  success: "bg-lime-600",
+  warning: "bg-orange-600",
+  danger: "bg-red-800",
+}
+
+const buttonGhostVariants = {
+  primary: "border-custom-accent",
+  success: "border-lime-600",
+  warning: "border-orange-600",
+  danger: "border-red-800",
+}
+
+const linkVariants = {
+  accent:
+    "text-custom-accent decoration-custom-primary decoration-wavy hover:underline decoration-2",
+  noAccent:
+    "text-custom-primary decoration-custom-accent decoration-wavy hover:underline decoration-2",
+}
+
+interface ButtonProps extends BaseProps {
+  isButton: true
+  typeButton: keyof typeof buttonTypes
+  variantButton: keyof typeof buttonFlatVariants | keyof typeof buttonGhostVariants
+}
+
+interface LinkProps extends BaseProps {
+  isButton?: false
+  variantLink: keyof typeof linkVariants
+}
+
+type Props = ButtonProps | LinkProps
+
+const props = Astro.props as Props
+const { title, href, sr, download, isExternal, isButton } = props
+---
+
+<a
+  title={title}
+  href={href}
+  download={download}
+  class:list={[
+    "transform transition-transform duration-200 ease-in-out hover:scale-105",
+    isButton
+      ? `${buttonTypes[(props as ButtonProps).typeButton]} ${(props as ButtonProps).typeButton === "flat" ? buttonFlatVariants[(props as ButtonProps).variantButton] : buttonGhostVariants[(props as ButtonProps).variantButton]}`
+      : linkVariants[(props as LinkProps).variantLink],
+    {
+      "text-custom-primary": isButton && ["primary"].includes((props as ButtonProps).variantButton),
+      "text-[#f5f5f5]":
+        isButton && ["success", "warning", "danger"].includes((props as ButtonProps).variantButton),
+    },
+  ]}
+  {...isButton && { role: "button" }}
+  {...isExternal && { rel: "noopener noreferrer", target: "_blank" }}
+>
+  <slot />
+  <span class="sr-only">{sr}</span>
+</a>

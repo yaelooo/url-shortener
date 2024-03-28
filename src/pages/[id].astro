@@ -1,0 +1,12 @@
+---
+import { getShortenedUrl } from "@lib/urlShortener"
+const { id } = Astro.params
+
+const result = await getShortenedUrl(`${id}`)
+
+if (result.error) {
+  return Astro.redirect("/404")
+} else {
+  return Astro.redirect(`${result.result}`)
+}
+---

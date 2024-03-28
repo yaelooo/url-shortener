@@ -1,0 +1,74 @@
+---
+import Link from "@components/Link.astro"
+import ArrowIcon from "@icons/ArrowIcon.astro"
+import TelegramIcon from "@icons/TelegramIcon.astro"
+import FacebookIcon from "@icons/FacebookIcon.astro"
+import InstagramIcon from "@icons/InstagramIcon.astro"
+import GithubIcon from "@icons/GithubIcon.astro"
+---
+
+<footer class="mb-2">
+  <hr class="my-2 border-custom-accent" />
+  <nav class="flex justify-between">
+    <button id="scroll-to-top" class="text-custom-accent">
+      <ArrowIcon />
+      <span class="sr-only">Go to top of page</span>
+    </button>
+    <ul class="flex gap-2">
+      <li>
+        <Link
+          title="Telegram"
+          href="https://yh1.xyz/s/tg"
+          variantLink="accent"
+          isExternal
+          sr="Go to my telegram"
+        >
+          <TelegramIcon />
+        </Link>
+      </li>
+      <li>
+        <Link
+          title="Facebook"
+          href="https://yh1.xyz/s/fb"
+          variantLink="accent"
+          isExternal
+          sr="Go to my facebook"
+        >
+          <FacebookIcon />
+        </Link>
+      </li>
+      <li>
+        <Link
+          title="Instagram"
+          href="https://yh1.xyz/s/ig"
+          variantLink="accent"
+          isExternal
+          sr="Go to my instagram"
+        >
+          <InstagramIcon />
+        </Link>
+      </li>
+      <li>
+        <Link
+          title="Github"
+          href="https://github.com/yaelooo/url-shortener"
+          variantLink="accent"
+          isExternal
+          sr="Go to my github repository"
+        >
+          <GithubIcon />
+        </Link>
+      </li>
+    </ul>
+  </nav>
+</footer>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const $button = document.getElementById("scroll-to-top")
+
+    $button?.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    })
+  })
+</script>
