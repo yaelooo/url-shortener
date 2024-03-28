@@ -52,9 +52,10 @@ if (Astro.request.method === "POST") {
           </div>
         </article>
         <figure>
-          <img src="" class="inline size-40 rounded-xl" alt="QR Code" />
+          <img class="inline size-40 rounded-xl" alt="QR Code" id="qrimg" />
           <figcaption class="text-center">
             <Link
+              id="qrlink"
               title="Download QR Code"
               href=""
               download={`qrcode-${result.result}.png`}
@@ -87,13 +88,10 @@ if (Astro.request.method === "POST") {
           scale: 10,
         })
 
-        const figureElement = document.querySelector("figure") as HTMLElement
-        const img = figureElement.querySelector("img") as HTMLImageElement
+        const img = document.getElementById("qrimg") as HTMLImageElement
         img.src = qr
 
-        const link = figureElement.querySelector(
-          'Link[title="Download QR Code"]'
-        ) as HTMLAnchorElement
+        const link = document.getElementById("qrlink") as HTMLAnchorElement
         link.href = qr
       }
     }
