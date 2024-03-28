@@ -5,13 +5,14 @@ import CopyIcon from "@icons/CopyIcon.astro"
 import { shortenUrl } from "@lib/urlShortener"
 
 const origin = Astro.url.origin
+const host = Astro.url.host
 let result = null
 
 if (Astro.request.method === "POST") {
   try {
     const data = await Astro.request.formData()
     const url = data.get("urlInput")
-    result = await shortenUrl(`${url}`)
+    result = await shortenUrl(host, `${url}`)
   } catch (error) {
     if (error instanceof Error) {
       console.error(error.message)

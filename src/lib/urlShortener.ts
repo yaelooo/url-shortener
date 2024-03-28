@@ -9,7 +9,8 @@ function generateId(length = 5) {
   return result
 }
 
-function validateUrl(url: string) {
+function validateUrl(host: string, url: string) {
+  const hostPattern = new RegExp(`^(http:\/\/|https:\/\/)?${host}`, "i")
   const domainPattern = /([a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5})/i
   const portPattern = /(:[0-9]{1,5})?/i
   const pathPattern = /(\/.*)?$/i
@@ -20,6 +21,10 @@ function validateUrl(url: string) {
 
   if (typeof url !== "string") {
     return "Invalid URL type (expected string)"
+  }
+
+  if (hostPattern.test(url)) {
+    return `Invalid URL host (must not be the same as "${host}")`
   }
 
   if (!/^https?:\/\//i.test(url)) {
@@ -60,9 +65,9 @@ async function getUrlById(id: string, tableName: string) {
   return data && data[0] ? { result: data[0].url } : { error }
 }
 
-export async function shortenUrl(url: string, id?: string) {
+export async function shortenUrl(host: string, url: string, id?: string) {
   // Verify URL is valid
-  const validationResult = validateUrl(url)
+  const validationResult = validateUrl(host, url)
   if (typeof validationResult === "string") {
     return { error: validationResult }
   }
