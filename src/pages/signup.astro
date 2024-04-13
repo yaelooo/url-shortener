@@ -1,7 +1,85 @@
 ---
 import Layout from "@layouts/Layout.astro"
+import ButtonAuth from "@components/ButtonAuth.astro"
+import Link from "@components/Link.astro"
+import EmailIcon from "@icons/auth/EmailIcon.astro"
+import PasswordIcon from "@icons/auth/PasswordIcon.astro"
 ---
 
 <Layout title="sign up">
-  <h1>To do :)</h1>
+  <section class="flex flex-col items-center justify-center gap-4">
+    <header class="text-center">
+      <h1>Sign up</h1>
+      <h2>Please enter your details below to create your account.</h2>
+      <h3 class="text-center text-orange-400">Soon...</h3>
+    </header>
+    <article class="flex flex-col items-center gap-4 md:flex-row md:gap-10">
+      <form class="mx-auto flex max-w-sm flex-col">
+        <fieldset class="flex flex-col gap-4" disabled>
+          <div class="flex flex-col gap-4">
+            <div class="relative">
+              <div class="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-2">
+                <EmailIcon class="text-gray-500 dark:text-gray-400" />
+              </div>
+              <input
+                type="email"
+                name="email"
+                placeholder="email@example.com"
+                autocomplete="email"
+                class="block w-full rounded-lg border border-custom-accent/50 bg-custom-background p-2.5 ps-10 outline-none"
+              />
+            </div>
+            <div class="relative">
+              <div class="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-2">
+                <PasswordIcon class="text-gray-500 dark:text-gray-400" />
+              </div>
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                class="block w-full rounded-lg border border-custom-accent/50 bg-custom-background p-2.5 ps-10 outline-none"
+              />
+            </div>
+            <div class="relative">
+              <div class="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-2">
+                <PasswordIcon class="text-gray-500 dark:text-gray-400" />
+              </div>
+              <input
+                type="password"
+                name="repeatpassword"
+                placeholder="Repeat password"
+                class="block w-full rounded-lg border border-custom-accent/50 bg-custom-background p-2.5 ps-10 outline-none"
+              />
+            </div>
+          </div>
+          <!-- hover:bg-custom-accent/40 -->
+          <button
+            class="flex w-full items-center justify-center rounded border border-custom-accent/50 bg-custom-accent/30 p-2"
+          >
+            Sign up
+          </button>
+        </fieldset>
+      </form>
+      <span class="hidden select-none text-custom-accent md:flex">/</span>
+      <div class="flex w-full items-center md:hidden">
+        <hr class="w-full border-custom-accent" />
+        <p class="flex min-w-fit select-none justify-center px-4">OR</p>
+        <hr class="w-full border-custom-accent" />
+      </div>
+      <aside class="flex flex-col gap-4">
+        <!-- <h3 class="text-center text-orange-400">Now available</h3> -->
+        <ButtonAuth type="signup" auth="google" />
+        <ButtonAuth type="signup" auth="github" />
+        <span>
+          Already have an account?
+          <Link
+            title="Go to the login page"
+            href="/login"
+            sr="Go to the login page"
+            variantLink="accent">Log in</Link
+          >
+        </span>
+      </aside>
+    </article>
+  </section>
 </Layout>
