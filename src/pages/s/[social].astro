@@ -4,7 +4,7 @@ const { social } = Astro.params
 
 const result = await getSocialUrl(`${social}`)
 
-if (result.error) {
+if (result.error === null) {
   return Astro.redirect("https://yaelo.dev")
 } else {
   return Astro.redirect(`${result.result}`)
