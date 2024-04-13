@@ -1,0 +1,53 @@
+---
+import GoogleIcon from "@icons/auth/GoogleIcon.astro"
+import GithubIcon from "@icons/auth/GithubIcon.astro"
+import { upperFirstLetter } from "@utils/firstLetter"
+
+interface Props {
+  auth: "google" | "github"
+  type: "login" | "signup"
+}
+
+const buttonStyles = {
+  github: "bg-[#24292F]",
+  google: "bg-[#4285F4]",
+}
+
+const authIcons = {
+  google: GoogleIcon,
+  github: GithubIcon,
+}
+
+const authClass = {
+  google: "loginGoogle",
+  github: "loginGithub",
+}
+
+const authButtonTexts = {
+  login: "Sign in",
+  signup: "Sign up",
+}
+
+const { auth, type } = Astro.props
+const AuthIcon = authIcons[auth]
+
+const authUpper = upperFirstLetter(auth)
+---
+
+<button
+  title={`${[authButtonTexts[type]]} with ${authUpper}`}
+  class:list={[
+    `${authClass[auth]}`,
+    "flex select-none items-center gap-2 rounded-md px-5 py-2.5 text-white",
+    // "flex transform select-none items-center gap-2 rounded-md px-5 py-2.5 text-white transition-transform duration-300 ease-in-out hover:scale-105",
+    {
+      [buttonStyles[auth]]: true,
+    },
+  ]}
+>
+  <AuthIcon class="size-6 sm:size-5" />
+  <span>
+    {[authButtonTexts[type]]} with {authUpper}
+  </span>
+  <span class="sr-only">Button to {[authButtonTexts[type]]} with {authUpper}</span>
+</button>
