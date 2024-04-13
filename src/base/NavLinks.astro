@@ -1,0 +1,38 @@
+---
+import { upperFirstLetter } from "@utils/firstLetter"
+
+const links = [
+  { href: "/", title: "home" },
+  { href: "/login", title: "log in" },
+  { href: "/signup", title: "sign up" },
+]
+
+const currentUrl = Astro.url.pathname.split("/")[1]
+const activeLinkClass =
+  "text-custom-accent underline decoration-wavy decoration-2 underline-offset-4 font-bold"
+const inactiveLinkClass = "hover:text-custom-accent"
+
+function getLinkClass(href: string) {
+  const linkUrl = href.split("/")[1]
+  if (linkUrl === "" && currentUrl === "") {
+    return activeLinkClass
+  }
+  return linkUrl === currentUrl ? activeLinkClass : inactiveLinkClass
+}
+---
+
+<ul class={`${Astro.props.class} select-none`}>
+  {
+    links.map(({ href, title }) => {
+      const upperTitle = upperFirstLetter(title)
+      return (
+        <li>
+          <a title={`Go to the ${title} page`} href={href} class={getLinkClass(href)}>
+            {upperTitle}
+            <span class="sr-only">{`Go to the ${title} page`}</span>
+          </a>
+        </li>
+      )
+    })
+  }
+</ul>

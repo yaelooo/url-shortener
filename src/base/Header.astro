@@ -1,32 +1,93 @@
 ---
 import ThemeSwitcher from "@base/ThemeSwitcher.astro"
-import Link from "@components/Link.astro"
+import NavLinks from "@base/NavLinks.astro"
 import LogoIcon from "@icons/LogoIcon.astro"
+import MenuIcon from "@icons/MenuIcon.astro"
 ---
 
-<header
-  class="sticky top-0 z-50 mb-4 flex items-center justify-between bg-custom-background/30 py-2 backdrop-blur"
->
-  <a
-    href="/"
-    class="transform text-custom-accent transition-transform duration-200 ease-in-out hover:scale-105"
-  >
-    <LogoIcon />
-    <span class="sr-only">Logo</span>
-  </a>
-  <nav>
-    <ul class="flex items-center gap-2">
-      <li><ThemeSwitcher /></li>
-      <li>
-        <Link
-          title="logout"
-          href="/logout"
-          sr="logout"
-          isButton
-          variantButton="primary"
-          typeButton="flat">Log out</Link
-        >
-      </li>
-    </ul>
+<header class="sticky top-0 z-50 h-12">
+  <nav class="flex h-full w-full items-center justify-between backdrop-blur">
+    <a
+      id="logo"
+      href="/"
+      class="transform text-custom-accent transition-transform duration-200 ease-in-out hover:scale-105"
+    >
+      <LogoIcon />
+      <span class="sr-only">Logo</span>
+    </a>
+    <div class="flex items-center gap-2">
+      <NavLinks class="hidden gap-4 md:flex" />
+      <ThemeSwitcher />
+      <button id="dropdown" class="flex text-custom-accent md:hidden">
+        <MenuIcon />
+        <span class="sr-only">Menu</span>
+      </button>
+    </div>
   </nav>
+  <div
+    class="dropdown-content absolute right-0 top-12 hidden bg-custom-background/30 backdrop-blur"
+  >
+    <NavLinks class="flex flex-col gap-4 p-4" />
+  </div>
 </header>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const buttonDropdown = document.getElementById("dropdown")
+    const dropdownClass = "dropdown-content"
+    const hiddenClass = "hidden"
+    const showClass = "flex"
+
+    function toggleDropdown() {
+      const dropdown = document.querySelector(`.${dropdownClass}`) as HTMLDivElement
+      dropdown.classList.toggle(hiddenClass)
+      dropdown.classList.toggle(showClass)
+    }
+
+    function hideDropdown() {
+      const dropdown = document.querySelector(`.${dropdownClass}`) as HTMLDivElement
+      dropdown.classList.remove(showClass)
+      dropdown.classList.add(hiddenClass)
+    }
+
+    buttonDropdown?.addEventListener("click", () => {
+      toggleDropdown()
+    })
+
+    window.addEventListener("click", (event) => {
+      const target = event.target as Element
+      if (target.closest("#dropdown") === null && target.closest(`.${dropdownClass}`) === null) {
+        hideDropdown()
+      }
+    })
+
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        hideDropdown()
+      }
+    })
+
+    window.addEventListener("resize", () => {
+      hideDropdown()
+    })
+
+    window.addEventListener("scroll", () => {
+      hideDropdown()
+    })
+  })
+</script>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const $button = document.getElementById("logo")
+
+    $button?.addEventListener("click", (event) => {
+      if (window.scrollY > 0) {
+        event.preventDefault()
+        window.scrollTo({ top: 0, behavior: "smooth" })
+      } else if (window.location.pathname == "/") {
+        event.preventDefault()
+      }
+    })
+  })
+</script>
