@@ -1,0 +1,50 @@
+---
+import Layout from "@layouts/Layout.astro"
+import Link from "@components/Link.astro"
+import EmailIcon from "@icons/auth/EmailIcon.astro"
+---
+
+<Layout title="reset password">
+  <section class="flex flex-col items-center justify-center gap-4">
+    <header class="text-center">
+      <h1>Forgot password?</h1>
+      <h2>No worries, we'll send your reset instructions.</h2>
+      <h3 class="text-center text-orange-400">Soon...</h3>
+    </header>
+    <article class="flex flex-col items-center gap-4 md:flex-row md:gap-10">
+      <form class="mx-auto flex max-w-sm flex-col">
+        <fieldset class="flex flex-col gap-4" disabled>
+          <div class="flex flex-col gap-4">
+            <div class="relative">
+              <div class="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-2">
+                <EmailIcon class="text-gray-500 dark:text-gray-400" />
+              </div>
+              <input
+                type="email"
+                name="email"
+                placeholder="email@example.com"
+                autocomplete="email"
+                class="block w-full rounded-lg border border-custom-accent/50 bg-custom-background p-2.5 ps-10 outline-none"
+              />
+            </div>
+          </div>
+          <!-- hover:bg-custom-accent/40 -->
+          <button
+            class="flex w-full items-center justify-center rounded border border-custom-accent/50 bg-custom-accent/30 p-2"
+          >
+            Send reset instructions
+          </button>
+          <Link
+            title="Go to the login page"
+            href="/login"
+            sr="Go to the login page"
+            variantLink="accent"
+            extraClasses="text-center"
+          >
+            Back to Log in
+          </Link>
+        </fieldset>
+      </form>
+    </article>
+  </section>
+</Layout>
