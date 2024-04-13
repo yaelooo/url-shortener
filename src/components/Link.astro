@@ -4,13 +4,14 @@ interface BaseProps {
   title: string
   href: string
   sr: string
+  extraClasses?: string
   download?: string
   isExternal?: boolean
 }
 
 const buttonTypes = {
-  flat: "flex rounded-md border px-4 py-1 border-transparent",
-  ghost: "flex rounded-md border px-4 py-1",
+  flat: "flex rounded-md border px-4 py-1 border-transparent select-none",
+  ghost: "flex rounded-md border px-4 py-1 select-none",
 }
 
 const buttonFlatVariants = {
@@ -29,7 +30,7 @@ const buttonGhostVariants = {
 
 const linkVariants = {
   accent:
-    "text-custom-accent decoration-custom-primary decoration-wavy hover:underline decoration-2",
+    "text-custom-accent hover:underline decoration-2 decoration-wavy decoration-custom-accent underline-offset-4",
   noAccent:
     "text-custom-primary decoration-custom-accent decoration-wavy hover:underline decoration-2",
 }
@@ -48,7 +49,7 @@ interface LinkProps extends BaseProps {
 type Props = ButtonProps | LinkProps
 
 const props = Astro.props as Props
-const { id, title, href, sr, download, isExternal, isButton } = props
+const { id, title, href, sr, download, isExternal, isButton, extraClasses } = props
 ---
 
 <a
@@ -57,6 +58,7 @@ const { id, title, href, sr, download, isExternal, isButton } = props
   href={href}
   download={download}
   class:list={[
+    ...(extraClasses !== undefined ? [extraClasses] : []),
     "transform transition-transform duration-200 ease-in-out hover:scale-105",
     isButton
       ? `${buttonTypes[(props as ButtonProps).typeButton]} ${(props as ButtonProps).typeButton === "flat" ? buttonFlatVariants[(props as ButtonProps).variantButton] : buttonGhostVariants[(props as ButtonProps).variantButton]}`
