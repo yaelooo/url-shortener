@@ -55,14 +55,20 @@ const metatags = {
     <Footer />
     <style is:global>
       .light {
+        /* black */
         --color-primary: 0, 0, 0;
-        --color-accent: 0, 112, 240;
+        /* blue-700 */
+        --color-accent: 29, 78, 216;
+        /* neutral-100 */
         --color-background: 245, 245, 245;
       }
 
       .dark {
+        /* neutral-100 */
         --color-primary: 245, 245, 245;
-        --color-accent: 102, 15, 179;
+        /* blue-500  */
+        --color-accent: 59, 130, 246;
+        /* black */
         --color-background: 0, 0, 0;
       }
 
@@ -80,8 +86,8 @@ const metatags = {
         text-wrap: pretty;
       }
     </style>
-    <script>
-      document.addEventListener("astro:after-swap", () => {
+    <script is:inline>
+      function getTheme() {
         let theme = localStorage.getItem("theme")
         if (!theme) {
           theme =
@@ -89,9 +95,17 @@ const metatags = {
               ? "dark"
               : "light"
         }
-        document.documentElement.className = theme
-      })
+        return theme
+      }
+
+      function applyTheme() {
+        document.documentElement.className = getTheme()
+      }
+
+      document.addEventListener("astro:after-swap", applyTheme)
+      applyTheme()
     </script>
+
     <script
       is:inline
       defer
