@@ -21,7 +21,10 @@ if (Astro.request.method === "POST") {
 }
 ---
 
-<form class="flex w-full sm:w-3/4" method="POST">
+<form
+  class="mb-4 flex w-full select-none rounded-md shadow-xl shadow-custom-accent/10 sm:w-3/4"
+  method="POST"
+>
   <input
     name="urlInput"
     type="text"
